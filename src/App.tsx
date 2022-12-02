@@ -1,37 +1,30 @@
-import { useState, useEffect } from 'react';
-import { getData } from './utils';
-import type { ItemData } from './types';
+import { useState, useEffect } from "react";
+import { getData } from "./utils";
+import type { ItemData } from "./types";
+import { Menu } from "./components/Menu";
+import { Filter } from "./components/Filter";
+import { Chart } from "./components/Chart";
+import { useData } from "./hooks/useData";
+import { useTemperatures } from "./hooks/useTemperature";
 
 function App() {
-    const [temperature, setTemperature] = useState<ItemData[]>([]);
-    const [precipitation, setPrecipitation] = useState<ItemData[]>([]);
+  const temperatures = useTemperatures();
 
-    useEffect(() => {
-        (async () => {
-            setTemperature(await getData<ItemData>('../data/temperature.json'));
-            setPrecipitation(await getData<ItemData>('../data/precipitation.json'));
-        })();
-    }, []);
+  // useEffect(() => {
+  //     (async () => {
+  //         setTemperature(await getData<ItemData>('../data/temperature.json'));
+  //         setPrecipitation(await getData<ItemData>('../data/precipitation.json'));
+  //     })();
+  // }, []);
 
-    return (
-        <div>
-            <div>
-                Temperature data length: {temperature.length}
-                <details>
-                    <summary>Temperature</summary>
-                    {JSON.stringify(temperature)}
-                </details>
-            </div>
-            <br />
-            <div>
-                Precipitation data length: {precipitation.length}
-                <details>
-                    <summary>Precipitation</summary>
-                    {JSON.stringify(precipitation)}
-                </details>
-            </div>
-        </div>
-    );
+  return (
+    <div>
+      <h2>Архив метеослужбы</h2>
+      <Menu></Menu>
+      <Filter></Filter>
+      <Chart></Chart>
+    </div>
+  );
 }
 
 export default App;
