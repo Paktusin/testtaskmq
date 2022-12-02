@@ -1,4 +1,4 @@
 export const tables = {
-  temparatures: "temparatures",
+  temparatures: "temperature",
   precipitation: "precipitation",
 };

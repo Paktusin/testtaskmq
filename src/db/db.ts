@@ -20,18 +20,34 @@ export function connect() {
 export class DataService<T> {
   constructor(private table: string) {}
 
-  async put(value: any) {
+  async withStore<T>(fn: (store: IDBObjectStore) => Promise<T>) {
     const db = await connect();
     const transaction = db.transaction([this.table], "readwrite");
-    const objectStore = transaction.objectStore(this.table);
-    await new Promise(
-      (resolve) => (objectStore.add(value).onsuccess = resolve)
+    return fn(transaction.objectStore(this.table));
+  }
+
+  async put(key: string, value: T) {
+    return this.withStore<IDBValidKey>((store) =>
+      this.toPromise(store.add(value))
     );
   }
 
-  async get<T = any>(key: string) {}
+  toPromise(fn: IDBRequest): Promise<any> {
+    return new Promise(
+      (resolve) =>
+        (fn.onsuccess = function () {
+          resolve(this.result);
+        })
+    );
+  }
 
-  async all<T = any>() {}
+  async get(key: string) {}
+
+  async all() {}
+
+  async count() {
+    return this.withStore<number>((store) => this.toPromise(store.count()));
+  }
 }
 
 export const temperatureService = new DataService(tables.temparatures);

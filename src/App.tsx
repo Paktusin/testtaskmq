@@ -1,21 +1,13 @@
-import { useState, useEffect } from "react";
-import { getData } from "./utils";
 import type { ItemData } from "./types";
 import { Menu } from "./components/Menu";
 import { Filter } from "./components/Filter";
 import { Chart } from "./components/Chart";
-import { useData } from "./hooks/useData";
-import { useTemperatures } from "./hooks/useTemperature";
+import { useTemperatures } from "./hooks/useTemperatures";
+import { usePrecipitations } from "./hooks/usePrecipitations";
 
 function App() {
-  const temperatures = useTemperatures();
-
-  // useEffect(() => {
-  //     (async () => {
-  //         setTemperature(await getData<ItemData>('../data/temperature.json'));
-  //         setPrecipitation(await getData<ItemData>('../data/precipitation.json'));
-  //     })();
-  // }, []);
+  const { data: temeratures, loading: tLoading } = useTemperatures();
+  const { data: precipitations, loading: pLoading } = usePrecipitations();
 
   return (
     <div>
