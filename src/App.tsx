@@ -11,7 +11,7 @@ function App() {
   const { data: precipitations, loading: pLoading } = usePrecipitations();
 
   const [state, dispatch] = useStore();
-
+  
   return (
     <StoreContenxt.Provider value={{ state, dispatch }}>
       <div>

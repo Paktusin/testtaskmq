@@ -20,8 +20,11 @@ const reducer: Reducer<StoreProps, { type: string; payload: any }> = (
   action
 ) => {
   switch (action.type) {
-    case "filter":
-      return { ...state, filter: action.payload };
+    case "from":
+      return { ...state, filter: { ...state.filter, from: action.payload } };
+    case "to":
+      return { ...state, filter: { ...state.filter, to: action.payload } };
+
   }
   return state;
 };

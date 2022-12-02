@@ -11,15 +11,11 @@ export const Filter: React.FC<FilterProps> = ({ children }) => {
     <div>
       <YearSelect
         value={from}
-        onChange={(value) =>
-          dispatch({ type: "filter", payload: { from: value, to } })
-        }
+        onChange={(value) => dispatch({ type: "from", payload: value })}
       />
       <YearSelect
         value={to}
-        onChange={(value) =>
-          dispatch({ type: "filter", payload: { to: value, from } })
-        }
+        onChange={(value) => dispatch({ type: "to", payload: value })}
       />
     </div>
   );
