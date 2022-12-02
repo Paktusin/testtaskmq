@@ -16,10 +16,11 @@ export function useData<T extends ItemData>(
       const count = await service.count();
       if (!count) {
         const backendData = await getData<T>(url);
-        setData(backendData);
         for (let row of backendData) {
           await service.put(row.t, row);
         }
+      } else {
+        setData(await service.all());
       }
     })();
   }, []);

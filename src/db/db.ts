@@ -43,7 +43,9 @@ export class DataService<T> {
 
   async get(key: string) {}
 
-  async all() {}
+  async all() {
+    return this.withStore<T[]>((store) => this.toPromise(store.getAll()));
+  }
 
   async count() {
     return this.withStore<number>((store) => this.toPromise(store.count()));
