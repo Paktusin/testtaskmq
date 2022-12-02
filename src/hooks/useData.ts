@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { DataService } from "../db/db";
 import { ItemData } from "../types";
 import { getData } from "../utils";
+import { StoreContenxt, useStore } from "./useStore";
 
 export function useData<T extends ItemData>(
   service: DataService<T>,
@@ -9,6 +10,10 @@ export function useData<T extends ItemData>(
 ) {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(false);
+  const { state } = useContext(StoreContenxt);
+  const fromStr = `${state.filter.from}-01-01`;
+  const toStr = `${state.filter.to + 1}-01-01`;
+  console.log(data, fromStr, toStr);
 
   useEffect(() => {
     setLoading(true);
@@ -20,8 +25,9 @@ export function useData<T extends ItemData>(
           await service.put(row.t, row);
         }
       } else {
-        setData(await service.all());
+        setData(await service.bound(fromStr, toStr));
       }
+      setLoading(false);
     })();
   }, []);
 

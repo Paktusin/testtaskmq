@@ -4,7 +4,7 @@ import { Select, SelectItem, SelectProps } from "./Select";
 export interface YearSelectProps extends Omit<SelectProps, "items"> {}
 
 export const MAX_YEAR = 2006;
-export const MIN_YEAR = 1981;
+export const MIN_YEAR = 1881;
 
 const years = Array(MAX_YEAR - MIN_YEAR + 1)
   .fill(null)

@@ -1,4 +1,5 @@
 import { tables } from "../tables";
+import { ItemData } from "../types";
 import migrations from "./migrations";
 
 const version = 2;
@@ -47,10 +48,21 @@ export class DataService<T> {
     return this.withStore<T[]>((store) => this.toPromise(store.getAll()));
   }
 
+  async bound(keyFrom: string, keyTo: string) {
+    const keyRangeValue = IDBKeyRange.bound(keyFrom, keyTo);
+    return this.withStore<T[]>((store) =>
+      this.toPromise(store.getAll(keyRangeValue, 365))
+    );
+  }
+
   async count() {
     return this.withStore<number>((store) => this.toPromise(store.count()));
   }
 }
 
-export const temperatureService = new DataService(tables.temparatures);
-export const precipitationService = new DataService(tables.precipitation);
+export const temperatureService = new DataService<ItemData>(
+  tables.temparatures
+);
+export const precipitationService = new DataService<ItemData>(
+  tables.precipitation
+);
