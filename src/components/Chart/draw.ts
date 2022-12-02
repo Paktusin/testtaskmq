@@ -1,6 +1,8 @@
 import { ItemData } from "../../types";
 import { ChartData, HistogramData } from "./Chart";
 
+const symbolWidth = 12;
+
 export function draw(
   data: ChartData<HistogramData>[],
   canvas: HTMLCanvasElement
@@ -9,10 +11,14 @@ export function draw(
   const labelYCount = 5;
   const ctx = canvas.getContext("2d")!;
   const size = canvas.getBoundingClientRect();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   const allData = data.reduce(
     (arr, cData) => arr.concat(cData.data),
     [] as HistogramData[]
   );
+  if (!allData.length) {
+    return;
+  }
   const range = getRanges(allData);
   const xLabels = getLabels(range.minX, range.maxX, labelXCount).map((n) =>
     new Date(Math.floor(n)).toDateString()
@@ -72,8 +78,9 @@ interface GridProps {
 }
 
 function drawGrid({ ctx, size, xLabels, yLabels }: GridProps) {
-  const maxYLabel = Math.max(...yLabels.map((l) => l.length));
+  const maxYLabel = Math.max(...yLabels.map((l) => l.length)) * symbolWidth;
   const maxXLabel = Math.max(...xLabels.map((l) => l.length));
-  console.log(xLabels, yLabels);
   ctx.moveTo(maxYLabel, size.height);
+  ctx.lineTo(maxYLabel, 0);
+  ctx.stroke();
 }

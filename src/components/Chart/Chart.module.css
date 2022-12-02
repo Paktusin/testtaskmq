@@ -1,7 +1,9 @@
 .chart {
   border: 2px solid var(--primary-gray);
-  height: 284px;
-  width: 431px;
+}
+
+.chart canvas{
+  display: block;
 }
 
 .chart.loading {

@@ -33,7 +33,7 @@ export const Histogram: React.FC<ChartProps<HistogramData>> = ({
       className={styles.chart}
       style={{ cursor: loading ? "progress" : undefined }}
     >
-      <canvas ref={ref}></canvas>
+      <canvas height={284} width={431} ref={ref}></canvas>
     </div>
   );
 };
