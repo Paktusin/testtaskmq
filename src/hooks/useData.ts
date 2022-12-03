@@ -21,7 +21,7 @@ export function useData() {
     const service =
       type === tables.temparatures ? temperatureService : precipitationService;
     const count = await service.count();
-    if (!count) {
+    if (!count) { // если нет данных в базе кешируем
       setLoading(true);
       const url = `../data/${type}.json`;
       const backendData = await getData<ItemData>(url);

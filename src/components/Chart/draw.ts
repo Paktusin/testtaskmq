@@ -21,6 +21,7 @@ export function draw(
     const barWidth =
       possibleBarWidth > minBarWidth ? possibleBarWidth : minBarWidth;
     const xScale = (items.length * barWidth) / canvas.width;
+     // если данных больше чем может отобразить канвас из расчета 1 записъ X barWidh то будем отображать каждый i * xScale элемент
     const rangeY = range.maxY - range.minY;
     const scaleValue = rangeY / canvas.height;
     console.table({
