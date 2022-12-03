@@ -4,7 +4,8 @@ import { StoreContenxt } from "../../hooks/useStore";
 import { tables } from "../../tables";
 import { Histogram } from "../Chart/Histrogram/Histogram";
 import { Filter } from "../Filter";
-import { Menu } from "../Menu";
+import { Menu } from "../Menu/Menu";
+import styles from "./Report.module.css";
 
 export function Report() {
   const { state } = useContext(StoreContenxt);
@@ -20,9 +21,9 @@ export function Report() {
   );
 
   return (
-    <div>
+    <div className={styles.report}>
       <h2>Архив метеослужбы</h2>
-      <div>
+      <div className={styles.body}>
         <Menu></Menu>
         <div>
           <Filter></Filter>

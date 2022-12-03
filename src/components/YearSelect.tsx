@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from "react";
-import { Select, SelectItem, SelectProps } from "./Select";
+import { Select, SelectItem, SelectProps } from "./Select/Select";
 
 export interface YearSelectProps extends Omit<SelectProps, "items"> {}
 

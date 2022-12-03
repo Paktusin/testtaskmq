@@ -1,5 +1,10 @@
 .button {
-
+  outline: none;
+  border: 0;
+  font-size: 23px;
+  padding: 7px 15px;
+  cursor: pointer;
+  text-align: left;
 }
 
 .active {

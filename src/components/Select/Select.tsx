@@ -1,4 +1,5 @@
 import React, { PropsWithChildren, useCallback } from "react";
+import styles from "./Select.module.css";
 
 export interface SelectItem {
   label: React.ReactNode;
@@ -17,7 +18,7 @@ export const Select: React.FC<SelectProps> = ({ items, value, onChange }) => {
     onChange && onChange(item.value, +event.target.value, item);
   }, []);
   return (
-    <select onChange={onSelectChange}>
+    <select className={styles.select} onChange={onSelectChange}>
       {items.map((item, index) => (
         <option key={item.value} value={index} selected={item.value === value}>
           {item.label}

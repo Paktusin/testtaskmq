@@ -9,7 +9,7 @@ export interface StoreProps {
 
 function init() {
   return {
-    filter: { from: MIN_YEAR, to: MIN_YEAR },
+    filter: { from: MIN_YEAR, to: MAX_YEAR },
     type: tables.temparatures,
   };
 }
