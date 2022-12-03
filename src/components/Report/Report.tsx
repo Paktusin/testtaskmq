@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useTemperatures } from "../../hooks/useTemperatures";
-import { Histogram } from "../Chart/Chart";
+import { Histogram } from "../Chart/Histogram";
 import { Filter } from "../Filter";
 import { Menu } from "../Menu";
 

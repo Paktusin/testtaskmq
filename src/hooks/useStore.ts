@@ -24,7 +24,6 @@ const reducer: Reducer<StoreProps, { type: string; payload: any }> = (
       return { ...state, filter: { ...state.filter, from: action.payload } };
     case "to":
       return { ...state, filter: { ...state.filter, to: action.payload } };
-
   }
   return state;
 };
