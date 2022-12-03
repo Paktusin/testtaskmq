@@ -31,8 +31,7 @@ export const Histogram: React.FC<ChartProps<HistogramData>> = ({
   return (
     <div
       className={styles.chart}
-      style={{ cursor: loading ? "progress" : undefined }}
-    >
+      style={{ cursor: loading ? "wait" : undefined }}>
       <canvas height={284} width={431} ref={ref}></canvas>
     </div>
   );

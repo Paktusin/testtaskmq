@@ -10,8 +10,6 @@ export function draw(
   const labelXCount = 5;
   const labelYCount = 5;
   const ctx = canvas.getContext("2d")!;
-  const size = canvas.getBoundingClientRect();
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
   const allData = data.reduce(
     (arr, cData) => arr.concat(cData.data),
     [] as HistogramData[]
@@ -26,12 +24,28 @@ export function draw(
   const yLabels = getLabels(range.minY, range.maxY, labelYCount).map((n) =>
     n.toFixed(2)
   );
-  drawGrid({
-    ctx,
-    size,
-    xLabels,
-    yLabels,
-  });
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.beginPath();
+  
+  for (let charData of data) {
+    const { data: items, color } = charData;
+    const w = Math.floor(canvas.width / items.length);
+    const barWidth = w > 2 ? w : 2;
+    const everyElement = Math.floor((items.length * barWidth) / canvas.width);
+    const rangeY = range.maxY - range.minY;
+    const scaleValue = rangeY / canvas.height;
+    for (let i = 0; i < items.length; i += everyElement) {
+      ctx.rect(
+        (i / everyElement) * barWidth,
+        rangeY / 2 / scaleValue,
+        barWidth,
+        items[i].value / scaleValue
+      );
+      ctx.fillStyle = color;
+      ctx.fill();
+    }
+  }
 }
 
 function getLabels(min: number, max: number, count: number) {

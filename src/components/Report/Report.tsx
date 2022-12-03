@@ -5,7 +5,7 @@ import { Filter } from "../Filter";
 import { Menu } from "../Menu";
 
 export function Report() {
-  const { data: temps, loading } = useTemperatures();
+  const { data: temps, loading, progress } = useTemperatures();
   const chartData = useMemo(
     () => [
       {
@@ -22,6 +22,7 @@ export function Report() {
         <Menu></Menu>
         <div>
           <Filter></Filter>
+          {loading && progress && <span>Caching data: {progress}%</span>}
           <Histogram loading={loading} data={chartData}></Histogram>
         </div>
       </div>

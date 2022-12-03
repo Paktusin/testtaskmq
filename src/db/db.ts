@@ -29,7 +29,7 @@ export class DataService<T> {
 
   async put(key: string, value: T) {
     return this.withStore<IDBValidKey>((store) =>
-      this.toPromise(store.add(value))
+      this.toPromise(store.put(value, key))
     );
   }
 
@@ -49,10 +49,20 @@ export class DataService<T> {
   }
 
   async bound(keyFrom: string, keyTo: string) {
-    const keyRangeValue = IDBKeyRange.bound(keyFrom, keyTo);
-    return this.withStore<T[]>((store) =>
-      this.toPromise(store.getAll(keyRangeValue, 365))
-    );
+    const keyRangeValue = IDBKeyRange.bound(keyFrom, keyTo, false, false);
+    return this.withStore<T[]>((store) => {
+      return new Promise((resolve) => {
+        const res: T[] = [];
+        store.openCursor(keyRangeValue).onsuccess = async function () {
+          if (this.result) {
+            res.push(this.result.value);
+            this.result.continue();
+          } else {
+            resolve(res);
+          }
+        };
+      });
+    });
   }
 
   async count() {
