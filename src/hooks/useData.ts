@@ -34,7 +34,7 @@ export function useData() {
       }
     }
     const fromStr = `${filter.from}-01-01`;
-    const toStr = `${filter.to}-01-01`;
+    const toStr = `${filter.to + 1}-01-01`;
     setData(await service.bound(fromStr, toStr));
     setLoading(false);
   }, [filter, type]);

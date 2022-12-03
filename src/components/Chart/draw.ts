@@ -1,5 +1,5 @@
 import { ChartData, HistogramData } from "./Histrogram/Histogram";
-import { RangeProps, useRanges } from "./useRanges";
+import { RangeProps } from "./useRanges";
 
 export function draw(
   data: ChartData<HistogramData>[],
@@ -16,17 +16,32 @@ export function draw(
     if (!items.length) {
       continue;
     }
-    const w = Math.floor(canvas.width / items.length);
-    const barWidth = w > 2 ? w : 2;
-    const everyElement = Math.ceil((items.length * barWidth) / canvas.width);
+    const minBarWidth = 1;
+    const possibleBarWidth = Math.ceil(canvas.width / items.length);
+    const barWidth =
+      possibleBarWidth > minBarWidth ? possibleBarWidth : minBarWidth;
+    const xScale = (items.length * barWidth) / canvas.width;
     const rangeY = range.maxY - range.minY;
     const scaleValue = rangeY / canvas.height;
-    for (let i = 0; i < items.length; i += everyElement) {
+    console.table({
+      everyElement: xScale,
+      height: canvas.height,
+      lengh: items.length,
+      barWidth,
+    });
+    for (let i = 0; i < Math.floor(items.length * xScale); i++) {
+      const lastIndex = Math.floor(i * xScale);
+      const item = items[lastIndex];
+      if (!item) {
+        continue;
+      }
       ctx.rect(
-        (i / everyElement) * barWidth,
-        rangeY / 2 / scaleValue,
+        i * barWidth,
+        canvas.height -
+          (rangeY - Math.max(Math.abs(range.maxY), Math.abs(range.minY))) /
+            scaleValue,
         barWidth,
-        items[i].value / scaleValue
+        item.value / -scaleValue
       );
       ctx.fillStyle = color;
       ctx.fill();

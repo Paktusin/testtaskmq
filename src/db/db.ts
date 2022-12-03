@@ -49,7 +49,7 @@ export class DataService<T> {
   }
 
   async bound(keyFrom: string, keyTo: string) {
-    const keyRangeValue = IDBKeyRange.bound(keyFrom, keyTo, false, false);
+    const keyRangeValue = IDBKeyRange.bound(keyFrom, keyTo, false, true);
     return this.withStore<T[]>((store) => {
       return new Promise((resolve) => {
         const res: T[] = [];

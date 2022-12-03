@@ -11,15 +11,16 @@ export interface GridProps extends PropsWithChildren {
 
 export const Grid: React.FC<GridProps> = ({
   children,
-  labelXCount = 5,
+  labelXCount = 6,
   labelYCount = 6,
   range,
 }) => {
   const xLabels = useMemo(
     () =>
-      getLabels(range.minX, range.maxX, labelXCount).map((n) =>
-        new Date(Math.floor(n)).toDateString()
-      ),
+      getLabels(range.minX, range.maxX, labelXCount).map((n) => {
+        const date = new Date(Math.floor(n));
+        return `${date.getFullYear()}/${date.getMonth() + 1}`;
+      }),
     [range]
   );
   const yLabels = useMemo(

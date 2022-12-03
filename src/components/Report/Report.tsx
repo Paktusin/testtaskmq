@@ -18,6 +18,7 @@ export function Report() {
     ],
     [data]
   );
+
   return (
     <div>
       <h2>Архив метеослужбы</h2>
