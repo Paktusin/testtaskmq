@@ -1,0 +1,30 @@
+.grid {
+  position: relative;
+}
+
+.ord {
+  position: absolute;
+  font-size: 10px;
+  color: var(--primary-gray);
+}
+
+.x {
+  display: flex;
+  width: 100%;
+  bottom: 0;
+  transform: translateY(100%);
+  padding: 8px 0;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.y {
+  display: flex;
+  height: 100%;
+  left: 0;
+  transform: translateX(-100%);
+  padding: 0 8px;
+  justify-content: space-between;
+  flex-direction: column-reverse;
+  text-align: right;
+}

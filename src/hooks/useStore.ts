@@ -1,25 +1,26 @@
 import { createContext, Reducer, useReducer } from "react";
 import { MAX_YEAR, MIN_YEAR } from "../components/YearSelect";
+import { tables } from "../tables";
 
 export interface StoreProps {
   filter: { from: number; to: number };
-  showTemp: boolean;
-  showPrec: boolean;
+  type: string;
 }
 
 function init() {
   return {
     filter: { from: MIN_YEAR, to: MAX_YEAR },
-    showTemp: true,
-    showPrec: false,
+    type: tables.temparatures,
   };
 }
 
-const reducer: Reducer<StoreProps, { type: string; payload: any }> = (
+const reducer: Reducer<StoreProps, { type: string; payload?: any }> = (
   state,
   action
 ) => {
   switch (action.type) {
+    case "kind":
+      return { ...state, type: action.payload };
     case "from":
       return { ...state, filter: { ...state.filter, from: action.payload } };
     case "to":
@@ -34,7 +35,7 @@ export function useStore() {
 
 export interface StoreContenxtProps {
   state: StoreProps;
-  dispatch: (action: { type: string; payload: any }) => void;
+  dispatch: (action: { type: string; payload?: any }) => void;
 }
 
 export const StoreContenxt = createContext<StoreContenxtProps>({} as any);

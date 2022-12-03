@@ -1,8 +1,8 @@
 import React, { PropsWithChildren, useEffect, useRef } from "react";
+import { draw } from "../draw";
+import { Grid } from "../Grid/Grid";
+import { useRanges } from "../useRanges";
 import styles from "./Histogram.module.css";
-import { draw } from "./draw";
-import { Grid } from "./Grid";
-import { useRanges } from "./useRanges";
 
 export interface ChartData<T> {
   data: T[];

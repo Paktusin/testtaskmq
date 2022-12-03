@@ -1,28 +1,30 @@
-import { useContext, useEffect, useState } from "react";
-import { DataService } from "../db/db";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { precipitationService, temperatureService } from "../db/db";
+import { tables } from "../tables";
 import { ItemData } from "../types";
 import { getData } from "../utils";
 import { StoreContenxt } from "./useStore";
 
-export function useData<T extends ItemData>(
-  service: DataService<T>,
-  url: string
-) {
-  const [data, setData] = useState<T[]>([]);
+export function useData() {
+  const [data, setData] = useState<ItemData[]>([]);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const { state } = useContext(StoreContenxt);
-  const { filter } = state;
+  const { filter, type } = state;
 
   useEffect(() => {
-    fetchData(filter.from, filter.to);
-  }, [filter]);
+    fetchData();
+  }, [filter, type]);
 
-  async function fetchData(from: number, to: number) {
+  const fetchData = useCallback(async () => {
+    setData([]);
+    const service =
+      type === tables.temparatures ? temperatureService : precipitationService;
     const count = await service.count();
     if (!count) {
       setLoading(true);
-      const backendData = await getData<T>(url);
+      const url = `../data/${type}.json`;
+      const backendData = await getData<ItemData>(url);
       const size = backendData.length;
       let count = 0;
       for (let row of backendData) {
@@ -31,11 +33,11 @@ export function useData<T extends ItemData>(
         setProgress(Math.floor((count / size) * 100));
       }
     }
-    const fromStr = `${state.filter.from}-01-01`;
-    const toStr = `${state.filter.to}-01-01`;
+    const fromStr = `${filter.from}-01-01`;
+    const toStr = `${filter.to}-01-01`;
     setData(await service.bound(fromStr, toStr));
     setLoading(false);
-  }
+  }, [filter, type]);
 
   return { data, loading, progress };
 }

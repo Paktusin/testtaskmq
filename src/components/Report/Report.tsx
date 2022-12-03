@@ -1,19 +1,22 @@
-import React, { useMemo } from "react";
-import { useTemperatures } from "../../hooks/useTemperatures";
-import { Histogram } from "../Chart/Histogram";
+import { useContext, useMemo } from "react";
+import { useData } from "../../hooks/useData";
+import { StoreContenxt } from "../../hooks/useStore";
+import { tables } from "../../tables";
+import { Histogram } from "../Chart/Histrogram/Histogram";
 import { Filter } from "../Filter";
 import { Menu } from "../Menu";
 
 export function Report() {
-  const { data: temps, loading, progress } = useTemperatures();
+  const { state } = useContext(StoreContenxt);
+  const { data, loading } = useData();
   const chartData = useMemo(
     () => [
       {
-        color: "red",
-        data: temps.map((i) => ({ value: i.v, time: new Date(i.t).valueOf() })),
+        color: state.type === tables.temparatures ? "red" : "blue",
+        data: data.map((i) => ({ value: i.v, time: new Date(i.t).valueOf() })),
       },
     ],
-    [temps]
+    [data]
   );
   return (
     <div>
@@ -22,7 +25,6 @@ export function Report() {
         <Menu></Menu>
         <div>
           <Filter></Filter>
-          {loading && progress && <span>Caching data: {progress}%</span>}
           <Histogram loading={loading} data={chartData}></Histogram>
         </div>
       </div>
