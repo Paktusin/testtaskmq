@@ -15,4 +15,5 @@ export async function registerSW() {
       console.error(`Registration failed with ${error}`);
     }
   }
+  return true;
 }

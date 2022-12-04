@@ -5,7 +5,13 @@ const updateTable = "updated";
 const tables = ["temperature", "precipitation"];
 let db;
 
-self.onfetch = (e) => {
+self.addEventListener("install", (event) => {
+  console.log("install");
+  event.waitUntil(self.skipWaiting());
+});
+
+self.addEventListener("fetch", (e) => {
+  console.log("onfetch");
   const requestURL = new URL(e.request.url),
     path = requestURL.pathname;
   if (path.indexOf("/data/") !== -1) {
@@ -14,36 +20,41 @@ self.onfetch = (e) => {
       e.respondWith(getData(requestedTable, path));
     }
   }
-};
+});
+
+self.addEventListener("activate", (event) => {
+  console.log("activate");
+  connect();
+  event.waitUntil(self.clients.claim());
+});
 
 let progress = {};
 
-async function update(table, url) {
+async function update(table, data) {
   if (progress[table]) {
+    console.log("already runing update for", table);
     return;
   } else {
+    console.log("start update for", table);
     progress[table] = true;
   }
   const conn = await connect();
-  const backendData = await fetch(url).then((res) => res.json());
-  for (let row of backendData) {
+  for (let row of data) {
     await toPromise(getStore(table, conn).put(row, row.t));
   }
-  await toPromise(getStore(updateTable, conn).put(table, 1));
+  await toPromise(getStore(updateTable, conn).put(1, table));
   progress[table] = false;
+  console.log("finish update for", table);
 }
 
 async function getData(table, url) {
   let res = [];
   try {
     const conn = await connect();
-    const updated = await toPromise(getStore(updateTable, conn).get(table));
-    if (!updated) {
-      update(table, url);
-    }
     const count = await toPromise(getStore(table, conn).count());
     if (!count) {
-      res = await fetch(url);
+      res = await fetch(url).then((res) => res.json());
+      update(table, res);
     } else {
       res = await toPromise(getStore(table, conn).getAll()); //can insert params query from to logic here bound()
     }

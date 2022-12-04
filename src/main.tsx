@@ -4,9 +4,13 @@ import App from "./App";
 import "./index.css";
 import { registerSW } from "./sw/serviceWorkerRegistration";
 
-registerSW();
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+registerSW().then(() => {
+  navigator.serviceWorker.ready.then(() => {
+    console.log("start react");
+    ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    );
+  });
+});
