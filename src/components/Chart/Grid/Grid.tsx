@@ -31,13 +31,13 @@ export const Grid: React.FC<GridProps> = ({
   return (
     <div className={clsx(styles.grid)}>
       <div className={clsx(styles.ord, styles.x)}>
-        {xLabels.map((l) => (
-          <span>{l}</span>
+        {xLabels.map((l, key) => (
+          <span key={key}>{l}</span>
         ))}
       </div>
       <div className={clsx(styles.ord, styles.y)}>
-        {yLabels.map((l) => (
-          <span>{l}</span>
+        {yLabels.map((l, key) => (
+          <span key={key}>{l}</span>
         ))}
       </div>
       {children}

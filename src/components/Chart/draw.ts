@@ -24,12 +24,6 @@ export function draw(
      // если данных больше чем может отобразить канвас из расчета 1 записъ X barWidh то будем отображать каждый i * xScale элемент
     const rangeY = range.maxY - range.minY;
     const scaleValue = rangeY / canvas.height;
-    console.table({
-      everyElement: xScale,
-      height: canvas.height,
-      lengh: items.length,
-      barWidth,
-    });
     for (let i = 0; i < Math.floor(items.length * xScale); i++) {
       const lastIndex = Math.floor(i * xScale);
       const item = items[lastIndex];
