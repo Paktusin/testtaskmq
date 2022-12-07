@@ -9,7 +9,7 @@ import styles from "./Report.module.css";
 
 export function Report() {
   const { state } = useContext(StoreContenxt);
-  const { data, loading } = useData();
+  const { data } = useData();
   const chartData = useMemo(
     () => [
       {
@@ -27,7 +27,7 @@ export function Report() {
         <Menu></Menu>
         <div>
           <Filter></Filter>
-          <Histogram loading={loading} data={chartData}></Histogram>
+          <Histogram data={chartData}></Histogram>
         </div>
       </div>
     </div>

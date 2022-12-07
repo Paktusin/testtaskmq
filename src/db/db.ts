@@ -1,17 +1,16 @@
 import { tables } from "../tables";
 import { ItemData } from "../types";
-import migrations from "./migrations";
 
 const version = 2;
-
-function loadMigration(this: IDBOpenDBRequest, event: IDBVersionChangeEvent) {
-  migrations[version] && migrations[version](this);
-}
 
 export function connect() {
   return new Promise<IDBDatabase>((resolve) => {
     const DBOpenRequest = window.indexedDB.open("test_mq", version);
-    DBOpenRequest.onupgradeneeded = loadMigration;
+    DBOpenRequest.onupgradeneeded = function () {
+      this.result.createObjectStore(tables.temparatures);
+      this.result.createObjectStore(tables.precipitation);
+      this.result.createObjectStore(tables.loaded);
+    };
     DBOpenRequest.onsuccess = function () {
       resolve(this.result);
     };
@@ -19,7 +18,7 @@ export function connect() {
 }
 
 export class DataService<T> {
-  constructor(private table: string) {}
+  constructor(public table: string) {}
 
   async withStore<T>(fn: (store: IDBObjectStore) => Promise<T>) {
     const db = await connect();
@@ -42,7 +41,9 @@ export class DataService<T> {
     );
   }
 
-  async get(key: string) {}
+  async get(key: string) {
+    return this.withStore<T>((store) => this.toPromise(store.get(key)));
+  }
 
   async all() {
     return this.withStore<T[]>((store) => this.toPromise(store.getAll()));
@@ -76,3 +77,5 @@ export const temperatureService = new DataService<ItemData>(
 export const precipitationService = new DataService<ItemData>(
   tables.precipitation
 );
+
+export const updateService = new DataService<number>(tables.loaded);

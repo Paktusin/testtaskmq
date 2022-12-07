@@ -11,7 +11,6 @@ export interface ChartData<T> {
 
 export interface ChartProps<T> extends PropsWithChildren {
   data: ChartData<T>[];
-  loading: boolean;
 }
 
 export interface HistogramData {
@@ -19,10 +18,7 @@ export interface HistogramData {
   value: number;
 }
 
-export const Histogram: React.FC<ChartProps<HistogramData>> = ({
-  data,
-  loading,
-}) => {
+export const Histogram: React.FC<ChartProps<HistogramData>> = ({ data }) => {
   const ref = useRef<HTMLCanvasElement>(null);
   const range = useRanges(data, "time");
   useEffect(() => {
@@ -31,10 +27,7 @@ export const Histogram: React.FC<ChartProps<HistogramData>> = ({
     }
   }, [data]);
   return (
-    <div
-      className={styles.chart}
-      style={{ cursor: loading ? "wait" : undefined }}
-    >
+    <div className={styles.chart}>
       <Grid range={range}>
         <canvas height={284} width={431} ref={ref}></canvas>
       </Grid>
