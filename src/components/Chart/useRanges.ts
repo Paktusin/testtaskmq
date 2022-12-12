@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { ChartData } from "./Histogram";
+import { ChartData } from "./Histrogram/Histogram";
 
 export interface RangeProps {
   maxX: number;
