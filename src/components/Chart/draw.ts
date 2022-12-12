@@ -21,21 +21,16 @@ export function draw(
     const barWidth =
       possibleBarWidth > minBarWidth ? possibleBarWidth : minBarWidth;
     const xScale = (items.length * barWidth) / canvas.width;
-     // если данных больше чем может отобразить канвас из расчета 1 записъ X barWidh то будем отображать каждый i * xScale элемент
-    const rangeY = range.maxY - range.minY;
-    const scaleValue = rangeY / canvas.height;
+    // если данных больше чем может отобразить канвас из расчета 1 записъ X barWidh то будем отображать каждый i * xScale элемент
+    const yScale = Math.abs(range.maxY - range.minY) / canvas.height;
+    const yRect = canvas.height + range.minY / yScale;
     for (let i = 0; i < Math.floor(items.length * xScale); i++) {
       const lastIndex = Math.floor(i * xScale);
       const item = items[lastIndex];
       if (!item) {
         continue;
       }
-      ctx.rect(
-        i * barWidth,
-        (rangeY - Math.max(Math.abs(range.maxY), Math.abs(range.minY))) / scaleValue,
-        barWidth,
-        item.value / -scaleValue
-      );
+      ctx.rect(i * barWidth, yRect, barWidth, -item.value / yScale);
       ctx.fillStyle = color;
       ctx.fill();
     }
