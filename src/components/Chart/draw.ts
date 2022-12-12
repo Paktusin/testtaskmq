@@ -32,9 +32,7 @@ export function draw(
       }
       ctx.rect(
         i * barWidth,
-        canvas.height -
-          (rangeY - Math.max(Math.abs(range.maxY), Math.abs(range.minY))) /
-            scaleValue,
+        (rangeY - Math.max(Math.abs(range.maxY), Math.abs(range.minY))) / scaleValue,
         barWidth,
         item.value / -scaleValue
       );
