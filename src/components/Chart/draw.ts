@@ -24,15 +24,16 @@ export function draw(
     // если данных больше чем может отобразить канвас из расчета 1 записъ X barWidh то будем отображать каждый i * xScale элемент
     const yScale = Math.abs(range.maxY - range.minY) / canvas.height;
     const yRect = canvas.height + range.minY / yScale;
-    for (let i = 0; i < Math.floor(items.length * xScale); i++) {
+    const max = Math.floor(items.length * xScale);
+    for (let i = 0; i < max; i++) {
       const lastIndex = Math.floor(i * xScale);
       const item = items[lastIndex];
       if (!item) {
         continue;
       }
       ctx.rect(i * barWidth, yRect, barWidth, -item.value / yScale);
-      ctx.fillStyle = color;
-      ctx.fill();
     }
+    ctx.fillStyle = color;
+    ctx.fill();
   }
 }

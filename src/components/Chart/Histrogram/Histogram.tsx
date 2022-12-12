@@ -29,7 +29,7 @@ export const Histogram: React.FC<ChartProps<HistogramData>> = ({ data }) => {
   return (
     <div className={styles.chart}>
       <Grid range={range}>
-        <canvas height={284} width={431} ref={ref}></canvas>
+        <canvas height={284} width={700} ref={ref}></canvas>
       </Grid>
     </div>
   );
