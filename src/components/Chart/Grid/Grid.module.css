@@ -18,6 +18,16 @@
   flex-direction: row;
 }
 
+.x > div {
+  position: relative;
+  width: 100%;
+}
+
+.x > div > span {
+  position: absolute;
+  transform: translateX(-50%);
+}
+
 .y {
   display: flex;
   height: calc(100% + 24px);

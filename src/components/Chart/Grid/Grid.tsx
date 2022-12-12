@@ -1,5 +1,11 @@
 import clsx from "clsx";
-import React, { PropsWithChildren, useMemo } from "react";
+import React, {
+  PropsWithChildren,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { RangeProps } from "../useRanges";
 import styles from "./Grid.module.css";
 
@@ -28,13 +34,30 @@ export const Grid: React.FC<GridProps> = ({
       getLabels(range.minY, range.maxY, labelYCount).map((n) => n.toFixed(2)),
     [range]
   );
+  const ref = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
+  useEffect(() => {
+    if (ref.current) {
+      setWidth(ref.current.getBoundingClientRect().width);
+    }
+  }, []);
+
   return (
-    <div className={clsx(styles.grid)}>
-      <div className={clsx(styles.ord, styles.x)}>
-        {xLabels.map((l, index) => (
-          <span key={index}>{l}</span>
-        ))}
-      </div>
+    <div ref={ref} className={clsx(styles.grid)}>
+      {width && (
+        <div className={clsx(styles.ord, styles.x)}>
+          <div>
+            {xLabels.map((l, index) => (
+              <span
+                key={index}
+                style={{ left: (index * width) / (xLabels.length - 1) }}
+              >
+                {l}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
       <div className={clsx(styles.ord, styles.y)}>
         {yLabels.map((l, index) => (
           <span key={index}>{l}</span>
