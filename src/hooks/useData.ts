@@ -32,6 +32,9 @@ export function useData() {
     }
     const ctrl = new AbortController();
     updateService.get(type).then((updated) => {
+      if (ctrl.signal.aborted) {
+        return;
+      }
       if (!updated) {
         const url = `../data/${type}.json`;
         fetch(url, { signal: ctrl.signal })
@@ -48,7 +51,9 @@ export function useData() {
         service.all().then(setDataAndCache);
       }
     });
-    return () => ctrl.abort();
+    return () => {
+      ctrl.abort();
+    };
   }, [type]);
 
   const data = useMemo(() => {
